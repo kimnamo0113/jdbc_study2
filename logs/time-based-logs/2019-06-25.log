@@ -1,0 +1,1 @@
+[TRACE] [2019-06-25 17:55:51 오후] com.mysql.jdbc.JDBC42PreparedStatement@12a6214e: select deptno, deptname, floor from department
