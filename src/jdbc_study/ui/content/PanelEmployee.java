@@ -151,10 +151,7 @@ public class PanelEmployee extends JPanel implements ActionListener {
 		tfEmpName.setText(emp.getEmpName());
 		tfTitle.setText(emp.getTitle());
 		tfSalary.setText(emp.getSalary() + "");
-//		tfManager.setText(emp.getManager().getEmpNo() + "");
 		cmbEmp.setSelectedItem(new Employee(emp.getManager().getEmpNo()));
-		
-//		cmbDept.setText(emp.getDno().getDeptNo() + "");
 		cmbDept.setSelectedItem(new Department(emp.getDno().getDeptNo()));
 		if (emp.getPic() != null) {
 			try {
@@ -205,9 +202,9 @@ public class PanelEmployee extends JPanel implements ActionListener {
 		tfEmpNo.setEditable(isEditable);
 		tfEmpName.setEditable(isEditable);
 		tfTitle.setEditable(isEditable);
-		cmbEmp.setEditable(isEditable);
+		cmbEmp.setEnabled(isEditable);
 		tfSalary.setEditable(isEditable);
-		cmbDept.setEditable(isEditable);
+		cmbDept.setEnabled(isEditable);
 		btnImgAdd.setVisible(false);
 	}
 

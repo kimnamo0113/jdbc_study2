@@ -90,7 +90,6 @@ public class EmployeeUI extends JFrame implements ActionListener, ItemListener {
 	}
 	private void actionPerformedBtnUpdate(ActionEvent e) {
 		Employee newEmp = pContent.getEmployee();
-		System.out.println("----------1---------");
 		System.out.println(newEmp);
 		int res;
 		try {
@@ -109,7 +108,6 @@ public class EmployeeUI extends JFrame implements ActionListener, ItemListener {
 
 	protected void actionPerformedBtnAdd(ActionEvent e) {
 		Employee newEmp = pContent.getEmployee();
-		System.out.println("--------1--------");
 		System.out.println(newEmp);
 		int res;
 		try {

@@ -1,4 +1,4 @@
-package jdbc_study.ui;
+package jdbc_study.ui.List;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -7,38 +7,35 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import jdbc_study.dto.Department;
-import javax.swing.JPopupMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import jdbc_study.ui.ErpManagementUI;
 
-@SuppressWarnings("serial")
-public class DepartmentListUI extends JFrame implements ActionListener {
-
+public abstract class AbstractListUi2<T> extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTable table;
-	private List<Department> deptList;
+	private List<T> itemList;
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmPopUpdate;
 	private JMenuItem mntmPopDelete;
 
 	private ErpManagementUI parent;
 
-	public DepartmentListUI() {
+	public AbstractListUi2() {
 		initComponents();
 	}
 
-	public void setDepartmentList(List<Department> deptList) {
-		this.deptList = deptList;
+	public void setDepartmentList(List<T> itemList) {
+		this.itemList = itemList;
 	}
 
 	private void initComponents() {
@@ -70,27 +67,12 @@ public class DepartmentListUI extends JFrame implements ActionListener {
 		scrollPane.setComponentPopupMenu(popupMenu);
 	}
 
-	public void reloadData() {
-		table.setModel(new DefaultTableModel(getRows(), getColumnNames()));
-
-		// 부서번호, 부서명은 가운데 정렬
-		tableCellAlignment(SwingConstants.CENTER, 0, 1);
-		// 위치(층)은 우측 정렬
-		tableCellAlignment(SwingConstants.RIGHT, 2);
-		// 부서번호, 부서명, 위치 의 폭을 (100, 200, 70)으로 가능하면 설정
-		tableSetWidth(100, 200, 70);
-	}
-
 	private Object[][] getRows() {
-		Object[][] rows = new Object[deptList.size()][];
-		for (int i = 0; i < deptList.size(); i++) {
-			rows[i] = deptList.get(i).toArray();
+		Object[][] rows = new Object[itemList.size()][];
+		for (int i = 0; i < itemList.size(); i++) {
+			rows[i] = getArray(i);
 		}
 		return rows;
-	}
-
-	private String[] getColumnNames() {
-		return new String[] { "부서번호", "부서명", "위치(층)" };
 	}
 
 	// 테이블 셀 내용의 정렬
@@ -112,7 +94,7 @@ public class DepartmentListUI extends JFrame implements ActionListener {
 			cModel.getColumn(i).setPreferredWidth(width[i]);
 		}
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mntmPopUpdate) {
@@ -143,7 +125,7 @@ public class DepartmentListUI extends JFrame implements ActionListener {
 
 		parent.actionPerformedBtnDeptDelete(deptNo);
 	}
-
+	
 	private void updateUI() {
 		int i = table.getSelectedRow();
 
@@ -158,12 +140,17 @@ public class DepartmentListUI extends JFrame implements ActionListener {
 
 		int deptNo = (int) table.getModel().getValueAt(i, 0);
 
-		Department searchDept = deptList.get(deptList.indexOf(new Department(deptNo)));
+//		T searchDept = itemList.get(itemList.indexOf(new Department(deptNo)));
+		T searchDept=hi();
 		parent.showDepartmentUI(searchDept);
 	}
+	
+	
+	protected abstract String[] getColumnNames();
 
-	public void setErpManagementUI(ErpManagementUI erpManagementUI) {
-		this.parent = erpManagementUI;
-	}
+	public abstract Object[] getArray(int index);
+//	itemList.get(itemList.indexOf(new Department(deptNo)));
+	public abstract T hi(); 
+	public abstract void reloadData();
 
 }

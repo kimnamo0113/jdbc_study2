@@ -19,6 +19,8 @@ import jdbc_study.daoimpl.DepartmentDaoImpl;
 import jdbc_study.daoimpl.EmployeeDaoImpl;
 import jdbc_study.dto.Department;
 import jdbc_study.dto.Employee;
+import jdbc_study.ui.List.DepartmentListUi;
+import jdbc_study.ui.List.EmployeeListUi;
 import jdbc_study.ui.content.PanelDepartment;
 import jdbc_study.ui.content.PanelEmployee;
 
@@ -36,10 +38,10 @@ public class ErpManagementUI extends JFrame implements ActionListener {
 	private EmployeeDao empDao;
 
 	private DepartmentUI frameDepartment;
-	private DepartmentListUI frameDepartmentList;
+	private DepartmentListUi frameDepartmentList;
 	
 	private EmployeeUI frameEmployee;
-	private EmployeeListUI frameEmployeeList;
+	private EmployeeListUi frameEmployeeList;
 	
 	private JPanel pDept;
 	private JPanel pEmp;
@@ -236,7 +238,7 @@ public class ErpManagementUI extends JFrame implements ActionListener {
 
 	private void showEmpListUI() throws SQLException {
 		if (frameEmployeeList == null) {
-			frameEmployeeList = new EmployeeListUI();
+			frameEmployeeList = new EmployeeListUi();
 			frameEmployeeList.setErpManagementUI(this);
 		}
 		
@@ -244,17 +246,17 @@ public class ErpManagementUI extends JFrame implements ActionListener {
 		if (selList == null) {
 			selList = new ArrayList<>();
 		}
-		frameEmployeeList.setEmployeeList(selList);
+		frameEmployeeList.setItemList(selList);
 		frameEmployeeList.reloadData();
 		frameEmployeeList.setVisible(true);
 	}
 	
 	private void showDeptListUI() {
 		if (frameDepartmentList == null) {
-			frameDepartmentList = new DepartmentListUI();
+			frameDepartmentList = new DepartmentListUi();
 			frameDepartmentList.setErpManagementUI(this);
 		}
-		frameDepartmentList.setDepartmentList(deptDao.selectDepartmentByAll());
+		frameDepartmentList.setItemList(deptDao.selectDepartmentByAll());
 		frameDepartmentList.reloadData();
 		frameDepartmentList.setVisible(true);
 	}
@@ -283,8 +285,9 @@ public class ErpManagementUI extends JFrame implements ActionListener {
 			return;
 		}
 		PanelEmployee pEmp = new PanelEmployee();
-		List<Department> deptList=(List<Department>)deptDao.selectDepartmentByNo(new Department(selEmp.getDno().getDeptNo()));
-		pEmp.setCmbDeptModel(deptList);
+		pEmp.setCmbDeptModel(deptDao.selectDepartmentByAll());
+		pEmp.setCmbEmpModel(empDao.selectEmployeeByAll());
+		pEmp.setEmployee(selEmp);
 		pEmp.setTfAllEditable(false);
 		JOptionPane.showMessageDialog(null, pEmp, "사원 정보", JOptionPane.INFORMATION_MESSAGE);
 	}
